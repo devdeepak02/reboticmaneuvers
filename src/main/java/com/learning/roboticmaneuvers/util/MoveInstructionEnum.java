@@ -5,13 +5,21 @@ package com.learning.roboticmaneuvers.util;
  */
 public enum MoveInstructionEnum {
 
-    Move('M'),
-    LEFT('L'),
-    RIGHT('R');
+    Move("M"),
+    LEFT("L"),
+    RIGHT("R");
 
-    private final char value;
+    private final String value;
 
-    MoveInstructionEnum(char value) {
+    MoveInstructionEnum(String value) {
         this.value = value;
+    }
+
+    public static MoveInstructionEnum find(String val) {
+        for (MoveInstructionEnum e : MoveInstructionEnum.values()) {
+            if (e.value.equalsIgnoreCase(val))
+                return e;
+        }
+        throw new IllegalStateException(String.format("Unsupported type %s.", val));
     }
 }

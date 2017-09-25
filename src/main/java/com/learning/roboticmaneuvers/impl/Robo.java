@@ -6,6 +6,7 @@ import com.learning.roboticmaneuvers.model.Plateau;
 import com.learning.roboticmaneuvers.util.DirectionEnum;
 import com.learning.roboticmaneuvers.util.DirectionUtil;
 import com.learning.roboticmaneuvers.util.MoveInstructionEnum;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
  * Created by devdeepak02 on 9/24/17.
  */
 @Component
+@Data
 public class Robo {
 
     @Autowired
@@ -29,6 +31,7 @@ public class Robo {
         yPosition = 0;
         currentDirection = DirectionEnum.NORTH;
     }
+
 
     public void move(MoveInstructionEnum moveInstructionEnum) {
 

@@ -6,15 +6,22 @@ package com.learning.roboticmaneuvers.util;
 public enum DirectionEnum {
 
 
-    NORTH(1),
-    SOUTH(2),
-    EAST(3),
-    WEST(4);
+    NORTH("N"),
+    SOUTH("S"),
+    EAST("E"),
+    WEST("W");
 
-    private final int value;
+    private final String value;
 
-    DirectionEnum(int value) {
+    DirectionEnum(String value) {
         this.value = value;
     }
 
+    public static DirectionEnum find(String val) {
+        for (DirectionEnum e : DirectionEnum.values()) {
+            if (e.value.equalsIgnoreCase(val))
+                return e;
+        }
+        throw new IllegalStateException(String.format("Unsupported type %s.", val));
+    }
 }

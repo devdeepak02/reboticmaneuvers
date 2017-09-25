@@ -1,6 +1,6 @@
 package com.learning.roboticmaneuvers.util;
 
-import com.learning.roboticmaneuvers.util.DirectionEnum;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
@@ -8,6 +8,7 @@ import java.util.List;
 /**
  * Created by devdeepak02 on 9/24/17.
  */
+@Component
 public class DirectionUtil {
 
     final List<DirectionEnum> turnL90DirectionList = Arrays.asList(DirectionEnum.NORTH, DirectionEnum.WEST, DirectionEnum.SOUTH, DirectionEnum.EAST);
