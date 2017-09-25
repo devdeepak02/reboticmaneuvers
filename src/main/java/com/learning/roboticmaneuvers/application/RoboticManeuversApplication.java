@@ -42,14 +42,20 @@ public class RoboticManeuversApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        log.info("====================================================");
+        log.info("**************                               ******");
+        log.info("************** Robotic Maneuvers Application ******");
+        log.info("**************                               *******");
+        log.info("====================================================");
+
         log.info("running application with args {}", args);
-        log.info("type quit to exit terminal");
+
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String plateauDimensions;
         String[] plateauMaxCoordinates;
 
         String roboPos;
-
+        //Let's collect plateau dimensions
         log.error("Enter plateau dimensions and press ENTER");
         plateauDimensions = reader.readLine();
         if (!StringUtils.isEmpty(plateauDimensions) &&
@@ -60,35 +66,48 @@ public class RoboticManeuversApplication implements CommandLineRunner {
             plateau.setxCordinateMax(maxXCoordinates);
             plateau.setyCordinateMax(maxYCoordinates);
         }
+        //two step process for every robo
+        //1 - collect initial possition
+        //2 - collect string of commands
+        while(true) {
+            log.info("provide initial position for robo ");
+            roboPos = reader.readLine();
+            String[] roboCoOrdinates;
+            // Did user provide initial position ?
+            if (!StringUtils.isEmpty(roboPos) &&
+                    (roboCoOrdinates = roboPos.split(" ")).length > 2) {
+                int roboXPos = Integer.parseInt(roboCoOrdinates[0]);
+                int roboYPos = Integer.parseInt(roboCoOrdinates[1]);
+                DirectionEnum roboDirection = DirectionEnum.find(roboCoOrdinates[2]);
 
-        log.info("provide initial position for first robo ");
-        roboPos = reader.readLine();
-        String[] roboCoOrdinates;
+                robo.setXPosition(roboXPos);
+                robo.setYPosition(roboYPos);
+                robo.setCurrentDirection(roboDirection);
+            }
 
-        if (!StringUtils.isEmpty(roboPos) &&
-                (roboCoOrdinates = roboPos.split(" ")).length > 2) {
-            int roboXPos = Integer.parseInt(roboCoOrdinates[0]);
-            int roboYPos = Integer.parseInt(roboCoOrdinates[1]);
-            DirectionEnum roboDirection = DirectionEnum.find(roboCoOrdinates[2]);
+            log.info("provide complete move instructions for first robo ");
 
-            robo.setXPosition(roboXPos);
-            robo.setYPosition(roboYPos);
-            robo.setCurrentDirection(roboDirection);
-        }
+            String moveInstruction = reader.readLine();
+            //Did user provide move instructions ?
+            if (!StringUtils.isEmpty(moveInstruction)) {
+                List<MoveInstructionEnum> commands = moveInstruction.chars()
+                        .mapToObj(x -> {
+                            String command = Character.toString((char) x);
+                            return MoveInstructionEnum.find(command);
+                        }).collect(Collectors.toList());
 
-        log.info("provide complete move instructions for first robo ");
+                if (!CollectionUtils.isEmpty(commands)) {
+                    //Execute each command to change robo state
+                    commands.forEach(robo::move);
 
-        String moveInstruction = reader.readLine();
-        if (!StringUtils.isEmpty(moveInstruction)) {
-            List<MoveInstructionEnum> commands = moveInstruction.chars()
-                    .mapToObj(x -> {
-                        String command = Character.toString((char) x);
-                        return MoveInstructionEnum.find(command);
-                    }).collect(Collectors.toList());
-
-            if (!CollectionUtils.isEmpty(commands)) {
-                commands.forEach(robo::move);
-                log.info("final robo position {}", robo);
+                    log.info("final robo position {}", robo);
+                }
+            }
+            // Want to continue or should I exit ?
+            log.info("do you want to continue ? Y/N ");
+            String response = reader.readLine();
+            if(!Boolean.valueOf(response)){
+                break;
             }
         }
 
