@@ -16,7 +16,7 @@ public class DirectionUtil {
     public DirectionEnum turnLeft90(DirectionEnum currentDirection) {
 
         int currentPos = turnL90DirectionList.indexOf(currentDirection);
-        if (currentPos == turnL90DirectionList.size()) {
+        if (currentPos == 3) {
             return turnL90DirectionList.get(0);
         }
         return turnL90DirectionList.get(currentPos + 1);

@@ -75,7 +75,7 @@ public class RoboticManeuversApplication implements CommandLineRunner {
             String[] roboCoOrdinates;
             // Did user provide initial position ?
             if (!StringUtils.isEmpty(roboPos) &&
-                    (roboCoOrdinates = roboPos.split(" ")).length > 2) {
+                    (roboCoOrdinates = roboPos.trim().split(" ")).length > 2) {
                 int roboXPos = Integer.parseInt(roboCoOrdinates[0]);
                 int roboYPos = Integer.parseInt(roboCoOrdinates[1]);
                 DirectionEnum roboDirection = DirectionEnum.find(roboCoOrdinates[2]);
@@ -85,12 +85,12 @@ public class RoboticManeuversApplication implements CommandLineRunner {
                 robo.setCurrentDirection(roboDirection);
             }
 
-            log.info("provide complete move instructions for first robo ");
+            log.info("provide complete move instructions for robo ");
 
             String moveInstruction = reader.readLine();
             //Did user provide move instructions ?
             if (!StringUtils.isEmpty(moveInstruction)) {
-                List<MoveInstructionEnum> commands = moveInstruction.chars()
+                List<MoveInstructionEnum> commands = moveInstruction.trim().chars()
                         .mapToObj(x -> {
                             String command = Character.toString((char) x);
                             return MoveInstructionEnum.find(command);
@@ -106,7 +106,7 @@ public class RoboticManeuversApplication implements CommandLineRunner {
             // Want to continue or should I exit ?
             log.info("do you want to continue ? Y/N ");
             String response = reader.readLine();
-            if(!Boolean.valueOf(response)){
+            if("N".equalsIgnoreCase(response)){
                 break;
             }
         }
